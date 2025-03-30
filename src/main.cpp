@@ -2,5 +2,8 @@
 
 using namespace std;
 int main(){
-    cout << "Hello, World!" << endl;
+    int x = 100, y = 20, z;
+    z = x + y;
+    
+    cout << z << endl;
 }
