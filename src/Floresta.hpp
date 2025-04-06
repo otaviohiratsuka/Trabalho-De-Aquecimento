@@ -4,7 +4,7 @@
 #include <vector>
 #include <random>
 
-using nasmespace std;
+//using nasmespace std;
 
 const int VAZIO = 0;
 const int ARVORE_SAUDAVEL = 1;
@@ -15,7 +15,8 @@ const int AGUA = 4;
 class Floresta {
     private:
     int linhas, colunas;
-    vector<vector<int>> grid;
+    //vector<vector<int>> grid;
+    std :: vector<std :: vector<int>> grid;
 
     public: //Construtores
     Floresta();
