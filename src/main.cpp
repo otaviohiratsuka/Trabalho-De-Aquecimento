@@ -6,4 +6,6 @@ int main(){
     z = x + y;
     
     cout << z << endl;
+    cout << "teste" << endl;
+    
 }
