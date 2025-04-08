@@ -1,8 +1,9 @@
 #include "Simulador.hpp"
+#include "config.hpp"
 
 using namespace std;
 
-void Simulador :: propFogo(Floresta& floresta){
+void Simulador :: propFogo(Floresta& floresta)const {
     int n =  floresta.getLinhas();
     int m = floresta.getColunas();
 
