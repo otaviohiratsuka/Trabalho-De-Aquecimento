@@ -3,30 +3,38 @@
 
 #include <vector>
 #include <random>
+#include <utility>
+#include "config.hpp"
 
 //using nasmespace std;
-
-const int VAZIO = 0;
-const int ARVORE_SAUDAVEL = 1;
-const int ARVORE_EM_CHAMAS = 2;
-const int ARVORE_QUEIMADA = 3;
-const int AGUA = 4;
 
 class Floresta {
     private:
     int linhas, colunas;
-    //vector<vector<int>> grid;
     std :: vector<std :: vector<int>> grid;
 
     public: //Construtores
     Floresta();
     Floresta(int n, int m);
-    void inicializarRandom();
-    void exibir() const;
-    void getEstado(int i, int j) const;
+
+    int getEstado(int i, int j) const;
+    void getEstado(int i, int j, int estado);
+
+    bool posValida(int i, int j) const;
+    std::vector<std::pair<int, int>> vizinhosOrtogonais(int i, int j) const;
+
+    bool temArvoresEmChamas() const;
+
+    void exibir() const;    
     void setEstado(int i, int j, int estado);
-    int getLinhas() const;
-    int getColunas() const;
-    bool dentroDosLimites(int i, int j) const;
+    int getLinhas() const {return linhas;};
+    int getColunas() const {return colunas;};
+
+    std::vector<std::vector<int>>& getGrid();
+
+    void attCelulasAdjacentesComAgua(int i, int j); //Requisito da movimentação do animal
+    void carregarArquivo(const std::string& nomeArquivo);
+
+    
 };
 #endif 
