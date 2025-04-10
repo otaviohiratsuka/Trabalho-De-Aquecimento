@@ -2,13 +2,23 @@
 #define SIMULADOR_HPP
 
 #include "Floresta.hpp"
+#include "Animal.hpp"
 #include "config.hpp"
+#include <string>
+
+using namespace std;
 
 class Simulador{
+    private:
+    Floresta floresta;
+    Animal* animal;
+    int intera;
+
     public:
-    Simulador() = default;
-    void propFogo(Floresta& floresta);
-    bool existeFogo(const Floresta& floresta);
+    Simulador();
+    ~Simulador();
+    void carregarEntrada(const string& arquivo);
+    void executar(const string& arquivoSaida);
 };
 
 #endif

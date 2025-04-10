@@ -6,34 +6,30 @@
 #include <utility>
 #include "config.hpp"
 
-//using nasmespace std;
+using namespace std;
 
 class Floresta {
     private:
     int linhas, colunas;
-    std :: vector<std :: vector<int>> grid;
+    vector<vector<int>> grid;
 
     public: //Construtores
     Floresta();
-    Floresta(int n, int m);
+
+    void carregarArquivo(const string& nomeArquivo);
+    void salvarEstado(const string& nomeArquivo, int itera) const;
 
     int getEstado(int i, int j) const;
-    void getEstado(int i, int j, int estado);
-
-    bool posValida(int i, int j) const;
-    std::vector<std::pair<int, int>> vizinhosOrtogonais(int i, int j) const;
-
-    bool temArvoresEmChamas() const;
-
-    void exibir() const;    
     void setEstado(int i, int j, int estado);
-    int getLinhas() const {return linhas;};
-    int getColunas() const {return colunas;};
 
-    std::vector<std::vector<int>>& getGrid();
+    int getLinhas() const;
+    int getColunas() const;
 
+    void propagaFogo();
+    bool temArvoresEmChamas() const;
+    bool posValida(int i, int j) const;
     void attCelulasAdjacentesComAgua(int i, int j); //Requisito da movimentação do animal
-    void carregarArquivo(const std::string& nomeArquivo);
+    
 
     
 };
