@@ -1,11 +1,15 @@
 #include <iostream>
+#include "Simulador.hpp"
+
 
 using namespace std;
 int main(){
-    int x = 100, y = 20, z;
-    z = x + y;
-    
-    cout << z << endl;
-    cout << "teste" << endl;
+    Simulador sim;
+
+    sim.carregarEntrada("input.dat");
+
+    sim.carregarEntrada("output.dat");
+
+    cout << "Simulação finalizada. Resultado salvos em output.dat" << endl;
     
 }

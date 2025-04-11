@@ -10,6 +10,7 @@ private:
     bool vivo;
 
     public:
+    Animal();
     Animal(int startX, int startY);
 
     void mover(Floresta& floresta);

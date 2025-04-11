@@ -1,4 +1,10 @@
 #include "Animal.hpp"
+#include "Floresta.hpp"
+#include <utility>
+#include <vector>
+
+Animal :: Animal(){
+}
 
 Animal :: Animal(int startX, int startY) : x(startX), y(startY), passos(0), ciclosPreso(0), findAgua(0), vivo(true){
 }
@@ -22,7 +28,7 @@ void Animal :: chegouAgua (Floresta& floresta){
     for (int d = 0; d < 4; d++){
         int nx = x + dx[d];
         int ny = y + dy[d];
-        if (floresta.dentroDosLimites(nx, ny)) {
+        if (floresta.posValida(nx, ny)) {  //posValida, seria dentroDosLimites, mas não era declarado em nenhuma classe 
             floresta.setEstado(nx, ny, 1);
         }
     }
@@ -36,7 +42,7 @@ void Animal ::mover(Floresta& floresta){
 
     for (int d = 0; d < 4; d++){
         int nx =  x + dx[d], ny = y + dy[d];
-        if (floresta.dentroDosLimites(nx,ny)){
+        if (floresta.posValida(nx,ny)){
             int estado = floresta.getEstado(nx,ny);
             if (estado == 4){
                 melhorX = nx; melhorY = ny; melhorValor = 4;

@@ -1,8 +1,6 @@
 #include "Floresta.hpp"
+#include "config.hpp"
 #include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <ctime>
 #include <utility>
 #include <vector>
 
@@ -12,7 +10,7 @@ Floresta :: Floresta() : linhas(0), colunas(0){
 }
 
 void Floresta :: carregarArquivo(const string& nomeArquivo){
-    ifstream arquivo(nomeArquivo);
+    ifstream arquivo ("nomeArquivo");
 
     if(!arquivo.is_open()){
         cerr << "erro ao abrir o arquivo: " << nomeArquivo << endl;
