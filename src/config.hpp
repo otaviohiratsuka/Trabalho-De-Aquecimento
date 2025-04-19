@@ -9,15 +9,12 @@ const int ARVORE_EM_CHAMAS = 2;
 const int ARVORE_QUEIMADA = 3;
 const int AGUA = 4;
 
+//tamanho da floresta
+const int TAM_LINHAS = 5;
+const int TAM_COLUNAS = 5;
 
 //config de simulação
 const int MAX_INTERACOES = 100;
-
-//vento
-const bool VENTO_ATIVADO = true;
-const bool VENTO_ESQUERDA = true;
-const bool VENTO_DIREITA = false;
-const bool VENTO_CIMA = true;
-const bool VENTO_BAIXO = false;
+const int DURACAO_FOGO = 3;
 
 #endif

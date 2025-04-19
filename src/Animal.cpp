@@ -6,7 +6,7 @@
 Animal :: Animal(){
 }
 
-Animal :: Animal(int startX, int startY) : x(startX), y(startY), passos(0), ciclosPreso(0), findAgua(0), vivo(true){
+/*Animal :: Animal(int startX, int startY) : x(startX), y(startY), passos(0), ciclosPreso(0), findAgua(0), vivo(true){
 }
 
 bool Animal :: estaVivo() const{
@@ -71,4 +71,4 @@ void Animal :: checkQueimou(Floresta& floresta){
     if(floresta.getEstado(x,y) == 2 ){
         vivo = false; // animal morto
     }
-}
+}*/

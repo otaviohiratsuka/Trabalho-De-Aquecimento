@@ -2,31 +2,24 @@
 #define FLORESTA_HPP
 
 #include <vector>
-#include <random>
+#include <string>
+#include <iostream>
+#include "config.hpp"
 
 using namespace std;
 
 class Floresta {
     private:
-    int linhas, colunas;
-    vector<vector<int>> grid;
+    vector<vector<int>> matriz;
+    vector<vector<int>> tempoFogo;
+    bool temFogo() const;
 
-    public: //Construtores
+    public:
     Floresta();
-    
-    void carregarArquivo(const string& nomeArquivo);
-    void salvarEstado(const string& nomeArquivo, int itera) const;
-
-    int getEstado (int i, int j) const;
-    void setEstado (int i, int j, int estado);
-
-    int getLinhas();
-    int getColunas();
-
+    bool carregaArquivo(const string& arquivo);
+    void salvaArquivo(const string& arquivo, int interacao) const;
     void propagaFogo();
-    void temArvoresEmChamas() const;
-    void attCelulasAdjacentesComAgua(int i, int j);
-    bool posValida(int i, int j) const;
-
+    bool simular(int maxInteracao);
+    void mostrarEstadoTerminal(int iteracao) const;
 };
 #endif 
