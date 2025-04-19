@@ -5,14 +5,17 @@
 #include <string>
 #include <iostream>
 #include "config.hpp"
+#include "Animal.hpp"
 
 using namespace std;
 
 class Floresta {
     private:
     vector<vector<int>> matriz;
+    Animal animal;
     vector<vector<int>> tempoFogo;
     bool temFogo() const;
+
 
     public:
     Floresta();

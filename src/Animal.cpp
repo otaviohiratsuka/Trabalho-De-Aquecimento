@@ -1,74 +1,97 @@
 #include "Animal.hpp"
-#include "Floresta.hpp"
-#include <utility>
-#include <vector>
+#include <algorithm>
 
-Animal :: Animal(){
+Animal :: Animal (int x, int y) : posicao(make_pair(x, y)), passos(0), encontrouAgua(0), vivo(true){
 }
 
-/*Animal :: Animal(int startX, int startY) : x(startX), y(startY), passos(0), ciclosPreso(0), findAgua(0), vivo(true){
-}
+PrioridadeMovimento Animal :: avaliarPrioridade(int tipoCelula) const{
+    switch (tipoCelula){
+    case AGUA:
+        return MELHOR;
 
-bool Animal :: estaVivo() const{
-    return vivo && ciclosPreso < 3;
-}
+    case VAZIO:
 
-int Animal :: getX() const { return x; }
-int Animal :: getY() const { return y; }
-int Animal :: getPassos() const { return passos; }
-int Animal :: getFoundAgua() const { return findAgua; }
+    case ARVORE_SAUDAVEL:
+        return INTERMEDIARIA;
+    
+    case ARVORE_QUEIMADA:
+        return PIOR;
 
-void Animal :: chegouAgua (Floresta& floresta){
-    findAgua++;
-    floresta.setEstado(x, y, 0);
-
-    int dx[] = {-1, 1, 0, 0};
-    int dy[] = {0, 0, -1, 1};
-
-    for (int d = 0; d < 4; d++){
-        int nx = x + dx[d];
-        int ny = y + dy[d];
-        if (floresta.posValida(nx, ny)) {  //posValida, seria dentroDosLimites, mas não era declarado em nenhuma classe 
-            floresta.setEstado(nx, ny, 1);
-        }
+    default:
+        return PIOR; //incluindo fogo como opção
     }
 }
 
-void Animal ::mover(Floresta& floresta){
-    int melhorX = x, melhorY= y, melhorValor = floresta.getEstado(x,y);
-    
-    int dx[] = {-1, 1, 0, 0};
-    int dy[] = {0, 0, -1, 1};
+bool Animal :: mover(const vector<vector<int>> & matriz) {
+    if(!vivo) return false;
 
-    for (int d = 0; d < 4; d++){
-        int nx =  x + dx[d], ny = y + dy[d];
-        if (floresta.posValida(nx,ny)){
-            int estado = floresta.getEstado(nx,ny);
-            if (estado == 4){
-                melhorX = nx; melhorY = ny; melhorValor = 4;
-                break;
+    int x = posicao.first;
+    int y = posicao.second;
+
+    vector<pair<PrioridadeMovimento, pair<int, int>>> opcoes;
+    const pair<int, int> direcoes[] = {make_pair(-1,0), make_pair(1,0), make_pair(0,-1), make_pair(0,1)};
+
+    for (size_t i = 0; i < 4; i++){
+        int dx = direcoes[i].first;
+        int dy = direcoes[i].second;
+        int nx = x + dx;
+        int ny = y + dy;
+
+        if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
+            int celula = matriz[nx][ny];
+            if(celula != ARVORE_EM_CHAMAS){
+                opcoes.push_back(make_pair(avaliarPrioridade(celula), make_pair(nx, ny)));
             }
-            else if ((estado == 0 || estado == 1) && melhorValor != 4){
-                melhorX = nx; melhorY = ny; melhorValor = estado;
-            }  
         }
-    }   
-    if (melhorX != x || melhorY != y){
-        x = melhorX; y = melhorY;
-        ciclosPreso = 0;
+    }
+    
+    //Função de comparação para ordenar
+    struct{
+        bool operator()(const pair<PrioridadeMovimento, pair<int, int>> & a, const pair<PrioridadeMovimento, pair<int, int>> & b) const {
+            return a.first < b.first;
+        }
+    }
+    comparador;
+
+    sort(opcoes.begin(), opcoes.end(), comparador);
+
+    if (!opcoes.empty()){
+        int novoX = opcoes[0].second.first;
+        int novoY = opcoes[0].second.second;
+        posicao.first = novoX;
+        posicao.second = novoY;
         passos++;
 
-        if (melhorValor == 4){
-            chegouAgua(floresta);
+        if (opcoes[0].first == MELHOR){
+            encontrouAgua++;
+            return true;
         }
+        return true;
     }
-    else{
-        ciclosPreso++;
+
+    if (matriz[x][y] == ARVORE_EM_CHAMAS){
+        vivo = false;
     }
+    return false;
 }
 
-void Animal :: checkQueimou(Floresta& floresta){
-    if(floresta.getEstado(x,y) == 2 ){
-        vivo = false; // animal morto
+void Animal :: encontrarAgua(vector<vector<int>> & matriz){
+    int x = posicao.first;
+    int y = posicao.second;
+    matriz[x][y] = VAZIO;
+
+    const pair<int, int> direcoes[] = {make_pair(-1,0), make_pair(1,0), make_pair(0,-1), make_pair(0,1)};
+
+    for (size_t i = 0; i < 4; i++){
+        int dx = direcoes[i].first;
+        int dy = direcoes[i].second;
+        int nx = x + dx;
+        int ny = y + dy;
+
+        if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
+            if(matriz[nx][ny] == ARVORE_EM_CHAMAS){
+                matriz[nx][ny] = ARVORE_SAUDAVEL;
+            }
+        }
     }
-}*/
+}

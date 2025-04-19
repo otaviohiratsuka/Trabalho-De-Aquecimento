@@ -1,27 +1,31 @@
 #ifndef ANIMAL_HPP 
 #define ANIMAL_HPP
 
-#include "Floresta.hpp"
+#include "config.hpp"
+#include <utility>
+#include <vector>
+
+using namespace std;
 
 class Animal{
-private:
-    int x,y;
-    int passos, ciclosPreso, findAgua;
+    private:
+    pair<int, int> posicao;
+    int passos;
+    int encontrouAgua;
     bool vivo;
 
+    PrioridadeMovimento avaliarPrioridade(int tipoCelula) const;
+
     public:
-    Animal();
-    Animal(int startX, int startY);
+    Animal(int x, int y);
 
-    void mover(Floresta& floresta);
-    void chegouAgua(Floresta& floresta);
-    void checkQueimou(Floresta& floresta);
-
-    int getX() const;
-    int getY() const;
+    pair<int, int> getPosicao() const;
     int getPassos() const;
-    int getFoundAgua() const;
+    int getEncontrouAgua() const;
     bool estaVivo() const;
+
+    bool mover(const vector<vector<int>> & matriz);
+    void encontrarAgua(vector<vector<int>> & matriz);
 
 };
 #endif

@@ -17,4 +17,11 @@ const int TAM_COLUNAS = 5;
 const int MAX_INTERACOES = 100;
 const int DURACAO_FOGO = 3;
 
+enum PrioridadeMovimento{
+    MELHOR = 0,
+    INTERMEDIARIA,
+    PIOR
+};
+
+
 #endif
