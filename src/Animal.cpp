@@ -1,5 +1,6 @@
 #include "Animal.hpp"
 #include <algorithm>
+#include <iostream>
 
 Animal :: Animal (int x, int y) : posicao(make_pair(x, y)), passos(0), encontrouAgua(0), vivo(true), tempoRepouso(0){
 }
@@ -94,7 +95,11 @@ bool Animal :: mover(vector<vector<int>> & matriz) {
 void Animal :: encontrarAgua(vector<vector<int>> & matriz){
     int x = posicao.first;
     int y = posicao.second;
+
+    if(matriz[x][y] !=  AGUA) return;
+
     matriz[x][y] = SEGURO ;
+    encontrouAgua++;
 
     const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};
 
@@ -103,10 +108,9 @@ void Animal :: encontrarAgua(vector<vector<int>> & matriz){
         int ny = y + dir.second;
 
         if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
-            if(matriz[nx][ny] == ARVORE_QUEIMADA){
+            if(matriz[nx][ny] == ARVORE_EM_CHAMAS || matriz[nx][ny] == ARVORE_QUEIMADA){
                 matriz[nx][ny] = ARVORE_SAUDAVEL;
             }
         }
     }
 }
-

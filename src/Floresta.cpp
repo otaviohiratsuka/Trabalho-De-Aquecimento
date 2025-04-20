@@ -105,16 +105,17 @@ bool Floresta :: simular(int maxIteracoes){
     for (int iter = 0; iter < maxIteracoes; ++iter){
 
         if(animal.estaVivo() && !animal.mover(matriz)){
-        cerr << "animal capturado pelo fogo \n";
+        cerr << "ANIMAL CAPTURADO PELO FOGO \n";
         return false;
         }
-
-        salvaArquivo("output.dat", iter);
+        
         propagaFogo();
+        salvaArquivo("output.dat", iter);
+        
         //mostrarEstadoTerminal();
 
         if (!temFogo()) {
-            cout << "fogo extinto \n";
+            cout << "FOGO EXTINTO \n";
             return true;
         }
     }
