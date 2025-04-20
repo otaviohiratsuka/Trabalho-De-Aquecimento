@@ -15,14 +15,16 @@ class Floresta {
     Animal animal;
     vector<vector<int>> tempoFogo;
     bool temFogo() const;
+    void propagaFogo();
 
 
     public:
-    Floresta();
+    Floresta(int animalX, int animalY);
+
     bool carregaArquivo(const string& arquivo);
     void salvaArquivo(const string& arquivo, int interacao) const;
-    void propagaFogo();
     bool simular(int maxInteracao);
-    void mostrarEstadoTerminal(int iteracao) const;
+
+    const Animal& getAnimal() const;
 };
 #endif 

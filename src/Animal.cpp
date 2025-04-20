@@ -1,7 +1,7 @@
 #include "Animal.hpp"
 #include <algorithm>
 
-Animal :: Animal (int x, int y) : posicao(make_pair(x, y)), passos(0), encontrouAgua(0), vivo(true){
+Animal :: Animal (int x, int y) : posicao(make_pair(x, y)), passos(0), encontrouAgua(0), vivo(true), tempoRepouso(0){
 }
 
 PrioridadeMovimento Animal :: avaliarPrioridade(int tipoCelula) const{
@@ -10,6 +10,7 @@ PrioridadeMovimento Animal :: avaliarPrioridade(int tipoCelula) const{
         return MELHOR;
 
     case VAZIO:
+        return INTERMEDIARIA;
 
     case ARVORE_SAUDAVEL:
         return INTERMEDIARIA;
@@ -22,20 +23,46 @@ PrioridadeMovimento Animal :: avaliarPrioridade(int tipoCelula) const{
     }
 }
 
-bool Animal :: mover(const vector<vector<int>> & matriz) {
+pair<int, int> Animal :: getPosicao() const{
+    return posicao;
+}
+
+int Animal :: getPassos() const{
+    return passos;
+}
+
+bool Animal :: estaVivo() const{
+    return vivo;
+}
+
+int Animal :: getTempoRepouso() const{
+    return tempoRepouso;
+}
+
+int Animal :: getEncontrouAgua() const{
+    return encontrouAgua;
+}
+
+bool Animal :: mover(vector<vector<int>> & matriz) {
     if(!vivo) return false;
 
     int x = posicao.first;
     int y = posicao.second;
 
-    vector<pair<PrioridadeMovimento, pair<int, int>>> opcoes;
-    const pair<int, int> direcoes[] = {make_pair(-1,0), make_pair(1,0), make_pair(0,-1), make_pair(0,1)};
+    //verifica repouso em área segura
+    if((matriz[x][y] ==  VAZIO || matriz[x][y] == SEGURO) && tempoRepouso < MAX_REPOUSO){
+        tempoRepouso++;
+        return true;
+    }
+    tempoRepouso = 0;
 
-    for (size_t i = 0; i < 4; i++){
-        int dx = direcoes[i].first;
-        int dy = direcoes[i].second;
-        int nx = x + dx;
-        int ny = y + dy;
+    //gera opcoes de movimento
+    const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+    vector<pair<int, pair<int, int>>> opcoes;
+
+    for (const auto& dir : direcoes){
+        int nx = x + dir.first;
+        int ny = y + dir.second;
 
         if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
             int celula = matriz[nx][ny];
@@ -45,31 +72,20 @@ bool Animal :: mover(const vector<vector<int>> & matriz) {
         }
     }
     
-    //Função de comparação para ordenar
-    struct{
-        bool operator()(const pair<PrioridadeMovimento, pair<int, int>> & a, const pair<PrioridadeMovimento, pair<int, int>> & b) const {
-            return a.first < b.first;
-        }
-    }
-    comparador;
-
-    sort(opcoes.begin(), opcoes.end(), comparador);
-
-    if (!opcoes.empty()){
-        int novoX = opcoes[0].second.first;
-        int novoY = opcoes[0].second.second;
-        posicao.first = novoX;
-        posicao.second = novoY;
+    //ordena por prioridade
+    sort(opcoes.begin(), opcoes.end());
+    if(!opcoes.empty()){
+        posicao.first = opcoes[0].second.first;
+        posicao.second = opcoes[0].second.second;
         passos++;
 
-        if (opcoes[0].first == MELHOR){
-            encontrouAgua++;
-            return true;
+        if(matriz[posicao.first][posicao.second] == AGUA){
+            encontrarAgua(matriz);
         }
         return true;
     }
 
-    if (matriz[x][y] == ARVORE_EM_CHAMAS){
+    if(matriz[x][y] == ARVORE_EM_CHAMAS){
         vivo = false;
     }
     return false;
@@ -78,20 +94,19 @@ bool Animal :: mover(const vector<vector<int>> & matriz) {
 void Animal :: encontrarAgua(vector<vector<int>> & matriz){
     int x = posicao.first;
     int y = posicao.second;
-    matriz[x][y] = VAZIO;
+    matriz[x][y] = SEGURO ;
 
-    const pair<int, int> direcoes[] = {make_pair(-1,0), make_pair(1,0), make_pair(0,-1), make_pair(0,1)};
+    const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};
 
-    for (size_t i = 0; i < 4; i++){
-        int dx = direcoes[i].first;
-        int dy = direcoes[i].second;
-        int nx = x + dx;
-        int ny = y + dy;
+    for (const auto& dir : direcoes){
+        int nx = x + dir.first;
+        int ny = y + dir.second;
 
         if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
-            if(matriz[nx][ny] == ARVORE_EM_CHAMAS){
+            if(matriz[nx][ny] == ARVORE_QUEIMADA){
                 matriz[nx][ny] = ARVORE_SAUDAVEL;
             }
         }
     }
 }
+

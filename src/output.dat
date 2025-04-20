@@ -1,56 +1,91 @@
-Iteracao: 0
+=== Iteracao: 0===
 1 1 1 1 4 
-1 2 1 1 1 
+1 2 5 1 1 
 1 1 1 1 4 
 0 0 1 1 1 
 1 4 1 0 4 
 
-Iteracao: 1
-1 2 1 1 4 
+[Estatisticas]
+passos:  1
+ | agua: 0
+ | repouso: 0/3
+
+
+=== Iteracao: 1===
+1 2 5 1 4 
 2 2 2 1 1 
 1 2 1 1 4 
 0 0 1 1 1 
 1 4 1 0 4 
 
-Iteracao: 2
-2 2 2 1 4 
+[Estatisticas]
+passos:  2
+ | agua: 0
+ | repouso: 0/3
+
+
+=== Iteracao: 2===
+2 2 2 5 4 
 2 2 2 2 1 
 2 2 2 1 4 
 0 0 1 1 1 
 1 4 1 0 4 
 
-Iteracao: 3
-2 3 2 2 4 
+[Estatisticas]
+passos:  3
+ | agua: 0
+ | repouso: 0/3
+
+
+=== Iteracao: 3===
+2 3 2 2 5 
 3 3 3 2 2 
 2 3 2 2 4 
 0 0 2 1 1 
 1 4 1 0 4 
 
-Iteracao: 4
-3 3 3 2 4 
+[Estatisticas]
+passos:  4
+ | agua: 0
+ | repouso: 0/3
+
+
+=== Iteracao: 4===
+3 3 3 2 5 
 3 3 3 3 2 
 3 3 3 2 4 
 0 0 2 2 1 
 1 4 2 0 4 
 
-Iteracao: 5
-3 3 3 3 4 
+[Estatisticas]
+passos:  4
+ | agua: 0
+ | repouso: 1/3
+
+
+=== Iteracao: 5===
+3 3 3 3 5 
 3 3 3 3 3 
 3 3 3 3 4 
 0 0 3 2 2 
 1 4 2 0 4 
 
-Iteracao: 6
-3 3 3 3 4 
+[Estatisticas]
+passos:  4
+ | agua: 0
+ | repouso: 2/3
+
+
+=== Iteracao: 6===
+3 3 3 3 5 
 3 3 3 3 3 
 3 3 3 3 4 
 0 0 3 3 2 
 1 4 3 0 4 
 
-Iteracao: 7
-3 3 3 3 4 
-3 3 3 3 3 
-3 3 3 3 4 
-0 0 3 3 3 
-1 4 3 0 4 
+[Estatisticas]
+passos:  4
+ | agua: 0
+ | repouso: 3/3
+
 

@@ -21,7 +21,7 @@ using namespace std;
 }*/
 
 int main(){
-    Floresta floresta;
+    Floresta floresta(2, 2);
 
     if(!floresta.carregaArquivo("input.dat")){
         return 1;

@@ -8,11 +8,13 @@
 using namespace std;
 
 class Animal{
+    
     private:
     pair<int, int> posicao;
     int passos;
     int encontrouAgua;
     bool vivo;
+    int tempoRepouso;
 
     PrioridadeMovimento avaliarPrioridade(int tipoCelula) const;
 
@@ -23,9 +25,12 @@ class Animal{
     int getPassos() const;
     int getEncontrouAgua() const;
     bool estaVivo() const;
+    int getTempoRepouso() const;
 
-    bool mover(const vector<vector<int>> & matriz);
     void encontrarAgua(vector<vector<int>> & matriz);
+    bool mover(vector<vector<int>> & matriz);
+
+
 
 };
 #endif
