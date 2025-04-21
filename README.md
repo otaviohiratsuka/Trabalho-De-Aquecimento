@@ -11,7 +11,7 @@
 
 # OBJETIVOS
 <div align="justify">
-<p>Foi proposto pelo professor Michel Pires na disciplina de Algorítimo e Estrtura de Dados I, um trabalho no qual o objetivo era a implementação de um simulador de propagação de incendio em um floresta, usando as linguagens C ou C++. Esse simulador deve modelar, em uma matriz bidimensional, o comportamento do fogo e a movimentação de um animal tentando escapar das chamas. </p>
+<p>Foi proposto pelo professor Michel Pires na disciplina de Algorítimo e Estrtura de Dados I, um trabalho no qual o objetivo era a implementação de um simulador de propagação de incêndio em um floresta, usando as linguagens C ou C++. Esse simulador deve modelar, em uma matriz bidimensional, o comportamento do fogo e a movimentação de um animal tentando escapar das chamas. </p>
 
 <p>🎯 Esse projeto visa: </br>
 <b>-Praticar programação com vetores/matrizes </br></b>
@@ -83,8 +83,51 @@ Se o animal estiver em uma posição e o fogo chegar lá na mesma rodada, ele te
 </hr>
 
 # LÓGICA
-
 </hr>
+
+# COMPILAÇÃO E EXECUÇÃO
+</hr>
+A algorítmo disponibilizado possui um arquivo Makefile que realiza todo o procedimento de compilação e execução. Para tanto, temos as seguintes diretrizes de execução:
+
+| Comando                |  Função                                                                                           |                     
+| -----------------------| ------------------------------------------------------------------------------------------------- |
+|  `make clean`          | Apaga a última compilação realizada contida na pasta build                                        |
+|  `make run`            | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build, além de em seguida executar o programa da pasta build após a realização da compilação | 
+|  `make`                | 
+
+
+
+# BIBLIOTECAS
+</hr>
+<h3>Bibliotecas utilizadas no projeto 📚</h3>
+<ul>
+  <li><code>#include 'iostream' </code></li>
+  <li><code>#include 'algorithm' </code></li>
+  <li><code>#include 'vector' </code></li>
+  <li><code>#include 'utility' </code></li>
+  <li><code>#include 'frstream' </code></li>
+  <li><code>#include 'string' </code></li>
+</ul>
+
+# ESTRUTURA DO PROJETO
+</hr>
+<h3>Estrutura de Pastas 🗃️</h3>
+
+```bash
+📁 projeto/               
+├── 📂 src/              
+│   ├── Animal.hpp
+│   ├── Animal.cpp
+│   ├── config.hpp          # HEADERS
+│   ├── Floresta.hpp
+│   ├── Floresta.cpp
+│   ├── main.cpp            # Codigo-Fonte
+│   ├── input.dat           # Arquivo de entrada 
+│   ├── output.dat          # Arquivo de saída 
+│   └── simulador.exe       # Executável 
+├── README.md             # Documentação
+└── Makefile
+```
 
 # AUTOR
 Criado por Otávio Hiratsuka Camilo;
