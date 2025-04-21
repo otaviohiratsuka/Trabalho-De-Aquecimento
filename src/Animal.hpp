@@ -21,6 +21,9 @@ class Animal{
     public:
     Animal(int x, int y);
 
+    bool mover(vector<vector<int>> & matriz);
+    void morrer();
+
     pair<int, int> getPosicao() const;
     int getPassos() const;
     int getEncontrouAgua() const;
@@ -28,7 +31,7 @@ class Animal{
     int getTempoRepouso() const;
 
     void encontrarAgua(vector<vector<int>> & matriz);
-    bool mover(vector<vector<int>> & matriz);
+    
 
 
 

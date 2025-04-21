@@ -28,6 +28,10 @@ pair<int, int> Animal :: getPosicao() const{
     return posicao;
 }
 
+void Animal :: morrer(){
+    vivo = false;
+}
+
 int Animal :: getPassos() const{
     return passos;
 }
@@ -49,6 +53,11 @@ bool Animal :: mover(vector<vector<int>> & matriz) {
 
     int x = posicao.first;
     int y = posicao.second;
+
+    if(matriz[x][y] == ARVORE_EM_CHAMAS){
+        morrer();
+        return false;
+    }
 
     //verifica repouso em área segura
     if((matriz[x][y] ==  VAZIO || matriz[x][y] == SEGURO) && tempoRepouso < MAX_REPOUSO){
@@ -74,10 +83,9 @@ bool Animal :: mover(vector<vector<int>> & matriz) {
     }
     
     //ordena por prioridade
-    sort(opcoes.begin(), opcoes.end());
     if(!opcoes.empty()){
-        posicao.first = opcoes[0].second.first;
-        posicao.second = opcoes[0].second.second;
+        sort(opcoes.begin(), opcoes.end());
+        posicao = opcoes[0].second;
         passos++;
 
         if(matriz[posicao.first][posicao.second] == AGUA){
@@ -85,11 +93,13 @@ bool Animal :: mover(vector<vector<int>> & matriz) {
         }
         return true;
     }
-
+    
     if(matriz[x][y] == ARVORE_EM_CHAMAS){
-        vivo = false;
+        morrer();
     }
     return false;
+
+
 }
 
 void Animal :: encontrarAgua(vector<vector<int>> & matriz){

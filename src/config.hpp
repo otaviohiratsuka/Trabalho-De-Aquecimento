@@ -22,8 +22,8 @@ const int DURACAO_FOGO = 3;
 
 enum PrioridadeMovimento{
     MELHOR = 0,
-    INTERMEDIARIA,
-    PIOR
+    INTERMEDIARIA = 1,
+    PIOR = 2
 };
 
 

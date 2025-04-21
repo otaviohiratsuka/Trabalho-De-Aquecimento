@@ -17,8 +17,8 @@ bool Floresta :: carregaArquivo(const string& arquivo){
         return false;
     }
     
-    for (int i = 0; i < TAM_COLUNAS; i++){
-        for (int j = 0; j < TAM_LINHAS; j++){
+    for (int i = 0; i < TAM_LINHAS; i++){
+        for (int j = 0; j < TAM_COLUNAS; j++){
             if(!(input >> matriz[i][j])){
                 cerr << "Erro ao ler dados do arquivo." << endl;
                 return false;
@@ -75,7 +75,22 @@ void Floresta :: propagaFogo(){
                     tempoFogo[i][j] = 0;
                 }
 
-                //1. acima
+                const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+                for(const auto& dir : direcoes){
+                    int ni = i + dir.first;
+                    int nj = j + dir.second;
+
+                    if(ni >= 0 && ni < TAM_LINHAS && nj >= 0 && nj < TAM_COLUNAS){
+                        if(matriz[ni][nj] == ARVORE_SAUDAVEL || matriz[ni][nj] == VAZIO){
+                            novaMatriz[ni][nj] = ARVORE_EM_CHAMAS;
+                            tempoFogo[ni][nj] = 1;
+
+                        }
+                    }
+                }
+
+
+                /*//1. acima
                 if(i > 0 && matriz[i-1][j] == ARVORE_SAUDAVEL){
                     novaMatriz[i-1][j] = ARVORE_EM_CHAMAS;
                     tempoFogo[i-1][j] = 1;
@@ -94,7 +109,7 @@ void Floresta :: propagaFogo(){
                 if(j < TAM_COLUNAS-1 && matriz[i][j+1] == ARVORE_SAUDAVEL){
                     novaMatriz[i][j+1] = ARVORE_EM_CHAMAS;
                     tempoFogo[i][j+1] = 1;
-                }
+                }*/
             }  
         }    
     }
@@ -104,15 +119,50 @@ void Floresta :: propagaFogo(){
 bool Floresta :: simular(int maxIteracoes){
     for (int iter = 0; iter < maxIteracoes; ++iter){
         cout << "\n=== ITERACAO " << iter << " ===" << endl;
+  
+        if(animal.estaVivo()) {
+           bool moveu = animal.mover(matriz);
 
-        mostrarEstadoTerminal();
-
-        if(animal.estaVivo() && !animal.mover(matriz)){
-        cerr << "\nANIMAL CAPTURADO PELO FOGO \n";
-        return false;
+           if(!moveu && matriz[animal.getPosicao().first][animal.getPosicao().second] == ARVORE_EM_CHAMAS){
+            cout << "\nANIMAL MORTO - PRESO NO FOGO!\n";
+            animal.morrer();
+            mostrarEstadoTerminal();
+            return false;
+           }
         }
         
         propagaFogo();
+
+
+        if(animal.estaVivo()){
+            auto pos = animal.getPosicao();
+        
+
+        if(matriz[pos.first][pos.second] == ARVORE_EM_CHAMAS){
+            bool fugiu = animal.mover(matriz);
+            
+            if(!fugiu || matriz[pos.first][pos.second] == ARVORE_EM_CHAMAS){
+                cout << "\nANIMAL MORREU QUEIMADO!\n";
+                animal.morrer();
+                mostrarEstadoTerminal();
+                return false;
+            }
+
+        }
+    }
+        /*pair<int, int> posicao = animal.getPosicao();\
+        int x = posicao.first;
+        int y = posicao.second;
+
+        if(animal.estaVivo() && matriz[x][y] ==  ARVORE_EM_CHAMAS){
+            bool conseguiuEscapar = animal.mover(matriz);
+            if(!conseguiuEscapar){
+                cout << "ANIMAL CAPTURADO PELO FOGO \n";
+                return false;
+            }
+        }*/
+
+        mostrarEstadoTerminal();
         salvaArquivo("output.dat", iter);
         
 
