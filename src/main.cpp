@@ -5,22 +5,9 @@
 
 using namespace std;
 
-/*void mostrarArquivoNoTerminal(const string& nomeArquivo){
-    ifstream arquivo(nomeArquivo);
-    if(arquivo.is_open()){
-        string linha;
-        cout << "\n Conteudo de " << nomeArquivo << " ===\n";
-        while (getline(arquivo, linha)){
-            cout << linha << endl;
-        }
-        cout << "======================\n";
-    }
-    else {
-        cerr << "Erro ao abrir " << nomeArquivo << " para leitura. \n";
-    }
-}*/
-
 int main(){
+    cout << "=== INICIANDO SIMULACAO ===" << endl;
+
     Floresta floresta(2, 2);
 
     if(!floresta.carregaArquivo("input.dat")){

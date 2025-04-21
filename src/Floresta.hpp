@@ -21,6 +21,7 @@ class Floresta {
     public:
     Floresta(int animalX, int animalY);
 
+    void mostrarEstadoTerminal() const;
     bool carregaArquivo(const string& arquivo);
     void salvaArquivo(const string& arquivo, int interacao) const;
     bool simular(int maxInteracao);

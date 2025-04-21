@@ -103,19 +103,22 @@ void Floresta :: propagaFogo(){
 
 bool Floresta :: simular(int maxIteracoes){
     for (int iter = 0; iter < maxIteracoes; ++iter){
+        cout << "\n=== ITERACAO " << iter << " ===" << endl;
+
+        mostrarEstadoTerminal();
 
         if(animal.estaVivo() && !animal.mover(matriz)){
-        cerr << "ANIMAL CAPTURADO PELO FOGO \n";
+        cerr << "\nANIMAL CAPTURADO PELO FOGO \n";
         return false;
         }
         
         propagaFogo();
         salvaArquivo("output.dat", iter);
         
-        //mostrarEstadoTerminal();
 
         if (!temFogo()) {
-            cout << "FOGO EXTINTO \n";
+            cout << "\nFOGO EXTINTO \n";
+            mostrarEstadoTerminal();
             return true;
         }
     }
@@ -126,45 +129,26 @@ const Animal& Floresta :: getAnimal() const{
     return animal;
 }
 
-/*void Floresta :: mostrarEstadoTerminal() const{
+void Floresta :: mostrarEstadoTerminal() const{
     auto posAnimal = animal.getPosicao();
 
+    cout << "\n=== ESTADO DA FLORESTA ===\n"; 
     for(int i = 0; i < TAM_LINHAS; i++){
         for (int j = 0; j < TAM_COLUNAS; j++){
             if(i == posAnimal.first && j == posAnimal.second && animal.estaVivo()){
-                cout << "5" ;
+                cout << "5 " ;
             }
             else {
-                switch (matriz[i][j]){
-                case VAZIO:
-                    cout << "0 ";
-                    break;
-
-                case ARVORE_SAUDAVEL:
-                    cout << "1 ";
-                    break;
-
-                case ARVORE_EM_CHAMAS:
-                    cout << "2 ";
-                    break;
-
-                case ARVORE_QUEIMADA:
-                    cout << "3 ";
-                    break;
-
-                case AGUA:
-                    cout << "4 ";
-                    break;
-                
-                case SEGURO:
-                    cout << "6 ";
-                    break;
-                default:
-                    cout <<"?";
-                    break;
-                }
+                cout << matriz[i][j] << " ";
             }
         }
         cout << endl;
     }
-}*/
+    cout << "\n[ESTATISTICAS]\n";
+    cout << "Posicao do animal: (" << posAnimal.first << "," << posAnimal.second << ")\n";
+    cout << "Passos dados: " << animal.getPassos() << "\n";
+    cout << "Fontes de agua encontradas: " << animal.getEncontrouAgua() << "\n";
+    cout << "Tempo de repouso: " << animal.getTempoRepouso() << "/" << MAX_REPOUSO << "\n";
+    cout << "Status: " << (animal.estaVivo() ? "1 (VIVO)" : "0 (MORTO)") << "\n\n";
+
+}
