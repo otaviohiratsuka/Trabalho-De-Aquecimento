@@ -16,11 +16,13 @@ class Floresta {
     vector<vector<int>> tempoFogo;
     bool temFogo() const;
     void propagaFogo();
+    bool ventoAtivado = false;
 
 
     public:
     Floresta(int animalX, int animalY);
 
+    void ativarVento();
     void mostrarEstadoTerminal() const;
     bool carregaArquivo(const string& arquivo);
     void salvaArquivo(const string& arquivo, int interacao) const;
