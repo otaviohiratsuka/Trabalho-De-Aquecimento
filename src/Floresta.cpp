@@ -1,173 +1,137 @@
 #include "Floresta.hpp"
-#include <fstream>
+#include "config.hpp"
 #include <iostream>
-#include <algorithm>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
-Floresta :: Floresta(int animalX, int animalY) : animal(animalX, animalY){
-    matriz.resize(TAM_LINHAS, vector<int>(TAM_COLUNAS, VAZIO));
-    tempoFogo.resize(TAM_LINHAS, vector<int>(TAM_COLUNAS, 0));
+Floresta :: Floresta() : linhas(0), colunas(0){
 }
 
-bool Floresta :: carregaArquivo(const string& arquivo){
-    ifstream input(arquivo);
-    if(!input.is_open()){
-        cerr <<"Erro ao abrir o arquivo." << endl;
-        return false;
+void Floresta :: carregarArquivo(const string& nomeArquivo){
+    ifstream arquivo ("nomeArquivo");
+
+    if(!arquivo.is_open()){
+        cerr << "erro ao abrir o arquivo: " << nomeArquivo << endl;
+        return;
     }
-    
-    for (int i = 0; i < TAM_LINHAS; i++){
-        for (int j = 0; j < TAM_COLUNAS; j++){
-            if(!(input >> matriz[i][j])){
-                cerr << "Erro ao ler dados do arquivo." << endl;
-                return false;
+
+    for (int i = 0; i < linhas; i++){
+        for (int j = 0; j < colunas; j++){
+            int valor;
+            arquivo >> valor;
+            if (posValida(i, j)){
+                grid[i][j] = valor;
             }
         }
     }
-    return true;
+    arquivo.close();
 }
 
-void Floresta :: salvaArquivo(const string& arquivo, int iteracao) const {
-    ofstream output(arquivo, ios::app);
-    if (!output.is_open()) return;
-
-    auto pos = animal.getPosicao();
-    
-    output << "=== Iteracao: " << iteracao << "===\n";
-    output << "Posição do animal: (" << pos.first << ", " << pos.second << ")\n";
-
-    for(int i = 0; i < TAM_LINHAS; i++){
-        for(int j = 0; j < TAM_COLUNAS; j++){
-            if(i == pos.first && j == pos.second && animal.estaVivo()){
-                output << "5 " ;
-            }
-            else{
-                output << matriz [i][j] << " ";
-            }
-        }
-        output << "\n" ;        
-    }
-        output << "\n[Estatisticas]\n";
-        output << " | passos:  " << animal.getPassos() << "\n";
-        output << " | agua: " << animal.getEncontrouAgua() << "\n";
-        output << " | repouso: " << animal.getTempoRepouso() << "/" << MAX_REPOUSO << "\n";
-        output << " | status: " << (animal.estaVivo() ? "VIVO" : "MORTO") << "\n\n";
-        output << "\n\n";
+void Floresta :: salvarEstado(const string& nomeArquivo, int itera) const{
+    ofstream arquivo(nomeArquivo, ios :: app);
+    if(!arquivo.is_open()){
+        cerr << "Erro ao salvar no arquivo: " << nomeArquivo << "\n";
+        return;
     }
 
-bool Floresta :: temFogo() const {
-    for(const auto& linha : matriz){
-        if(find (linha.begin(), linha.end(), ARVORE_EM_CHAMAS) != linha.end()){
-            return true;
-        }
+    arquivo << "Iteração" << itera << "\n";
+    for (const auto& linha : grid){
+        for (int celula : linha)
+            arquivo << celula << " ";
+        arquivo << "\n";
     }
+    arquivo << "\n";
+    arquivo.close();
+}
+
+void Floresta :: setEstado(int i, int j, int estado){
+    if(posValida(i, j))
+    grid[i][j] = estado;
+}
+
+int Floresta :: getLinhas() const{
+    return linhas;
+}
+
+int Floresta :: getColunas() const{
+    return colunas;
+}
+
+bool Floresta :: posValida(int i, int j) const{
+    return i >= 0 && i < linhas && j >= 0 && j < colunas;
+}
+
+bool Floresta :: temArvoresEmChamas() const{
+    for (int i = 0; i < linhas; ++i)
+        for (int j = 0; j < colunas; ++j)
+            if (grid[i][j] == ARVORE_EM_CHAMAS)
+                return true;
     return false;
 }
 
 void Floresta :: propagaFogo(){
-    auto novaMatriz = matriz;
+    vector<vector<int>> novaMatriz = grid;
 
-    for (int i = 0; i < TAM_LINHAS; i++){
-        for (int j = 0; j < TAM_COLUNAS; j++){
-            if (matriz[i][j] == ARVORE_EM_CHAMAS){
-                tempoFogo[i][j]++;
+    for(int i = 0; i < linhas; i++){
+        for (int j = 0; j < colunas; j++){
+            if (grid[i][j] == ARVORE_SAUDAVEL){
 
-                if (tempoFogo[i][j] >= DURACAO_FOGO){
-                    novaMatriz[i][j] = ARVORE_QUEIMADA;
-                    tempoFogo[i][j] = 0;
-                }
+              ///verifica vizinhos em chamas
+            vector<pair<int, int>> direcoes = {
+                {-1,0},{1,0},{0,-1},{0,1}
+};
+                for(const auto& par : direcoes){
+                    int di = par.first;
+                    int dj = par.second;
 
-                const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-                for(const auto& dir : direcoes){
-                    int ni = i + dir.first;
-                    int nj = j + dir.second;
+                    int ni = i + di;
+                    int nj = j + dj;
+                    if (posValida(ni, nj) && grid[ni][nj] == ARVORE_EM_CHAMAS){
+                        novaMatriz[i][j] = ARVORE_EM_CHAMAS;
+                        break;
+                    }                   
+                } 
+            }
 
-                    if(ni >= 0 && ni < TAM_LINHAS && nj >= 0 && nj < TAM_COLUNAS){
-                        if(matriz[ni][nj] == ARVORE_SAUDAVEL || matriz[ni][nj] == VAZIO){
-                            novaMatriz[ni][nj] = ARVORE_EM_CHAMAS;
-                            tempoFogo[ni][nj] = 1;
-
-                        }
-                    }
-                }
-            }  
-        }    
-    }
-    matriz = novaMatriz;
-}
-
-bool Floresta :: simular(int maxIteracoes){
-    for (int iter = 0; iter < maxIteracoes; ++iter){
-        cout << "\n=== ITERACAO " << iter << " ===" << endl;
-  
-        if(animal.estaVivo()) {
-           bool moveu = animal.mover(matriz);
-
-           if(!moveu && matriz[animal.getPosicao().first][animal.getPosicao().second] == ARVORE_EM_CHAMAS){
-            cout << "\nANIMAL MORTO - PRESO NO FOGO!\n";
-            animal.morrer();
-            mostrarEstadoTerminal();
-            return false;
-           }
-        }
-        
-        propagaFogo();
-
-
-        if(animal.estaVivo()){
-            auto pos = animal.getPosicao();
-        
-
-        if(matriz[pos.first][pos.second] == ARVORE_EM_CHAMAS){
-            bool fugiu = animal.mover(matriz);
+            else if(grid[i][j] == ARVORE_EM_CHAMAS){
+                novaMatriz[i][j] = ARVORE_QUEIMADA;
+            }
             
-            if(!fugiu || matriz[pos.first][pos.second] == ARVORE_EM_CHAMAS){
-                cout << "\nANIMAL MORREU QUEIMADO!\n";
-                animal.morrer();
-                mostrarEstadoTerminal();
-                return false;
-            }
-
         }
-    }
-        mostrarEstadoTerminal();
-        salvaArquivo("output.dat", iter);
         
-
-        if (!temFogo()) {
-            cout << "\nFOGO EXTINTO \n";
-            mostrarEstadoTerminal();
-            return true;
-        }
     }
-    return false; 
+
+    grid = novaMatriz;
 }
 
-const Animal& Floresta :: getAnimal() const{
-    return animal;
+int Floresta :: getEstado(int i, int j) const{
+    return grid[i][j];
 }
 
-void Floresta :: mostrarEstadoTerminal() const{
-    auto posAnimal = animal.getPosicao();
-
-    cout << "Posicao do animal: (" << posAnimal.first << "," << posAnimal.second << ")\n";
-
-    for(int i = 0; i < TAM_LINHAS; i++){
-        for (int j = 0; j < TAM_COLUNAS; j++){
-            if(i == posAnimal.first && j == posAnimal.second && animal.estaVivo()){
-                cout << "5 " ;
-            }
-            else {
-                cout << matriz[i][j] << " ";
-            }
-        }
-        cout << endl;
+void Floresta :: setEstado(int i, int j, int estado){
+    if (posValida(i, j)){
+        grid[i][j] = estado;
     }
-    cout << "\n[ESTATISTICAS]\n";
-    cout << "Passos dados: " << animal.getPassos() << "\n";
-    cout << "Fontes de agua encontradas: " << animal.getEncontrouAgua() << "\n";
-    cout << "Tempo de repouso: " << animal.getTempoRepouso() << "/" << MAX_REPOUSO << "\n";
-    cout << "Status: " << (animal.estaVivo() ? "1 (VIVO)" : "0 (MORTO)") << "\n\n";
-
 }
+
+//molha as celulas vizinhas com agua(quando animal chega na agua)
+void Floresta::attCelulasAdjacentesComAgua(int i, int j){
+    vector<pair<int,int>> direcoes;
+
+    direcoes.push_back(make_pair(-1,0)); //cima
+    direcoes.push_back(make_pair(1,0)); //baixo
+    direcoes.push_back(make_pair(0,-1)); //esquerda
+    direcoes.push_back(make_pair(0,1)); //direita
+
+    for(const pair<int,int>& direcao : direcoes){
+        int ni = i + direcao.first;
+        int nj = j + direcao.second;
+
+        if (posValida(ni, nj) && grid[ni][nj] == ARVORE_SAUDAVEL){
+            grid[ni][nj] = VAZIO;
+        }     
+    }
+}
+
