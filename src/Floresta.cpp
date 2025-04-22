@@ -31,9 +31,11 @@ bool Floresta :: carregaArquivo(const string& arquivo){
 void Floresta :: salvaArquivo(const string& arquivo, int iteracao) const {
     ofstream output(arquivo, ios::app);
     if (!output.is_open()) return;
+
+    auto pos = animal.getPosicao();
     
     output << "=== Iteracao: " << iteracao << "===\n";
-    auto pos =  animal.getPosicao();
+    output << "Posição do animal: (" << pos.first << ", " << pos.second << ")\n";
 
     for(int i = 0; i < TAM_LINHAS; i++){
         for(int j = 0; j < TAM_COLUNAS; j++){
@@ -47,9 +49,10 @@ void Floresta :: salvaArquivo(const string& arquivo, int iteracao) const {
         output << "\n" ;        
     }
         output << "\n[Estatisticas]\n";
-        output << "passos:  " << animal.getPassos() << "\n";
+        output << " | passos:  " << animal.getPassos() << "\n";
         output << " | agua: " << animal.getEncontrouAgua() << "\n";
         output << " | repouso: " << animal.getTempoRepouso() << "/" << MAX_REPOUSO << "\n";
+        output << " | status: " << (animal.estaVivo() ? "VIVO" : "MORTO") << "\n\n";
         output << "\n\n";
     }
 
@@ -88,28 +91,6 @@ void Floresta :: propagaFogo(){
                         }
                     }
                 }
-
-
-                /*//1. acima
-                if(i > 0 && matriz[i-1][j] == ARVORE_SAUDAVEL){
-                    novaMatriz[i-1][j] = ARVORE_EM_CHAMAS;
-                    tempoFogo[i-1][j] = 1;
-                }
-                //2. abaixo
-                if(i < TAM_LINHAS-1 && matriz[i+1][j] == ARVORE_SAUDAVEL){
-                    novaMatriz[i+1][j] = ARVORE_EM_CHAMAS;
-                    tempoFogo[i+1][j] = 1;
-                }
-                //3. esquerda
-                if(j > 0 && matriz[i][j-1] == ARVORE_SAUDAVEL){
-                    novaMatriz[i][j-1] = ARVORE_EM_CHAMAS;
-                    tempoFogo[i][j-1] = 1;
-                }
-                //4. direta
-                if(j < TAM_COLUNAS-1 && matriz[i][j+1] == ARVORE_SAUDAVEL){
-                    novaMatriz[i][j+1] = ARVORE_EM_CHAMAS;
-                    tempoFogo[i][j+1] = 1;
-                }*/
             }  
         }    
     }
@@ -150,18 +131,6 @@ bool Floresta :: simular(int maxIteracoes){
 
         }
     }
-        /*pair<int, int> posicao = animal.getPosicao();\
-        int x = posicao.first;
-        int y = posicao.second;
-
-        if(animal.estaVivo() && matriz[x][y] ==  ARVORE_EM_CHAMAS){
-            bool conseguiuEscapar = animal.mover(matriz);
-            if(!conseguiuEscapar){
-                cout << "ANIMAL CAPTURADO PELO FOGO \n";
-                return false;
-            }
-        }*/
-
         mostrarEstadoTerminal();
         salvaArquivo("output.dat", iter);
         
@@ -182,7 +151,8 @@ const Animal& Floresta :: getAnimal() const{
 void Floresta :: mostrarEstadoTerminal() const{
     auto posAnimal = animal.getPosicao();
 
-    cout << "\n=== ESTADO DA FLORESTA ===\n"; 
+    cout << "Posicao do animal: (" << posAnimal.first << "," << posAnimal.second << ")\n";
+
     for(int i = 0; i < TAM_LINHAS; i++){
         for (int j = 0; j < TAM_COLUNAS; j++){
             if(i == posAnimal.first && j == posAnimal.second && animal.estaVivo()){
@@ -195,7 +165,6 @@ void Floresta :: mostrarEstadoTerminal() const{
         cout << endl;
     }
     cout << "\n[ESTATISTICAS]\n";
-    cout << "Posicao do animal: (" << posAnimal.first << "," << posAnimal.second << ")\n";
     cout << "Passos dados: " << animal.getPassos() << "\n";
     cout << "Fontes de agua encontradas: " << animal.getEncontrouAgua() << "\n";
     cout << "Tempo de repouso: " << animal.getTempoRepouso() << "/" << MAX_REPOUSO << "\n";
