@@ -10,7 +10,7 @@ int main(){
 
     Floresta floresta(2, 2);
 
-    if(!floresta.carregaArquivo("input.dat")){
+    if(!floresta.carregaArquivo("/Trabalho-de-Aquecimento/SRC/input.dat")){
         return 1;
     }
 
