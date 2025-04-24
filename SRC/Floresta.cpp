@@ -16,19 +16,21 @@ void Floresta :: ativarVento(){
 
 bool Floresta :: carregaArquivo(const string& arquivo){
     ifstream input(arquivo);
-    if(!input.is_open()){
-        cerr <<"Erro ao abrir o arquivo." << endl;
+    if(!input){
+        cerr <<"Erro ao abrir o arquivo." << arquivo << endl;
         return false;
     }
     
     for (int i = 0; i < TAM_LINHAS; i++){
         for (int j = 0; j < TAM_COLUNAS; j++){
             if(!(input >> matriz[i][j])){
-                cerr << "Erro ao ler dados do arquivo." << endl;
+                cerr << "Erro: Falha ao ler dado na posição ["  << i << "][" << j << "]" << endl;
+                input.close();
                 return false;
             }
         }
     }
+    input.close();
     return true;
 }
 

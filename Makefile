@@ -8,7 +8,7 @@ TARGET   := app
 INCLUDE  := -Iinclude/
 SRC      := $(wildcard src/*.cpp) 
 
-OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+OBJECTS := $(patsubst src/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
 all: build $(APP_DIR)/$(TARGET)
 

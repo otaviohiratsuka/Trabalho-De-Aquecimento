@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "Floresta.hpp"
 #include "config.hpp"
 
@@ -10,7 +11,7 @@ int main(){
 
     Floresta floresta(2, 2);
 
-    if(!floresta.carregaArquivo("/Trabalho-de-Aquecimento/SRC/input.dat")){
+    if(!floresta.carregaArquivo("SRC/input.dat")){
         return 1;
     }
 
