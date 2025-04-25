@@ -48,59 +48,80 @@ int Animal :: getEncontrouAgua() const{
     return encontrouAgua;
 }
 
-bool Animal :: mover(vector<vector<int>> & matriz) {
-    if(!vivo) return false;
+bool Animal::mover(vector<vector<int>> & matriz) {
+    if (!vivo) return false;
 
     int x = posicao.first;
     int y = posicao.second;
 
-    if(matriz[x][y] == ARVORE_EM_CHAMAS){
+    if (matriz[x][y] == ARVORE_EM_CHAMAS) {
         morrer();
         return false;
     }
 
-    //verifica repouso em área segura
-    if((matriz[x][y] ==  VAZIO || matriz[x][y] == SEGURO) && tempoRepouso < MAX_REPOUSO){
-        tempoRepouso++;
-        return true;
-    }
-    tempoRepouso = 0;
-
-    //gera opcoes de movimento
+    // Verifica se há fogo nas redondezas
     const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-    vector<pair<int, pair<int, int>>> opcoes;
+    bool fogoAdjacente = false;
 
-    for (const auto& dir : direcoes){
+    for (const auto& dir : direcoes) {
         int nx = x + dir.first;
         int ny = y + dir.second;
 
-        if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
+        if (nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()) {
+            if (matriz[nx][ny] == ARVORE_EM_CHAMAS) {
+                fogoAdjacente = true;
+                break;
+            }
+        }
+    }
+
+    // Só repousa se não houver fogo próximo
+    if ((matriz[x][y] == VAZIO || matriz[x][y] == SEGURO) && !fogoAdjacente &&
+        tempoRepouso < MAX_REPOUSO) {
+
+        tempoRepouso++;
+        return true;
+    }
+
+    // Se fogo estiver por perto, cancela o repouso e exibe alerta
+    if (fogoAdjacente) {
+        std::cout << "Animal em perigo! Fogo adjacente detectado!.\n";
+    }
+    tempoRepouso = 0;
+
+    // Gera opções de movimento
+    vector<pair<int, pair<int, int>>> opcoes;
+    for (const auto& dir : direcoes) {
+        int nx = x + dir.first;
+        int ny = y + dir.second;
+
+        if (nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()) {
             int celula = matriz[nx][ny];
-            if(celula != ARVORE_EM_CHAMAS){
+            if (celula != ARVORE_EM_CHAMAS) {
                 opcoes.push_back(make_pair(avaliarPrioridade(celula), make_pair(nx, ny)));
             }
         }
     }
-    
-    //ordena por prioridade
-    if(!opcoes.empty()){
+
+    // Move para melhor opção
+    if (!opcoes.empty()) {
         sort(opcoes.begin(), opcoes.end());
         posicao = opcoes[0].second;
         passos++;
 
-        if(matriz[posicao.first][posicao.second] == AGUA){
+        if (matriz[posicao.first][posicao.second] == AGUA) {
             encontrarAgua(matriz);
         }
         return true;
     }
-    
-    if(matriz[x][y] == ARVORE_EM_CHAMAS){
+
+    if (matriz[x][y] == ARVORE_EM_CHAMAS) {
         morrer();
     }
+
     return false;
-
-
 }
+
 
 void Animal :: encontrarAgua(vector<vector<int>> & matriz){
     int x = posicao.first;
@@ -118,7 +139,7 @@ void Animal :: encontrarAgua(vector<vector<int>> & matriz){
         int ny = y + dir.second;
 
         if(nx >= 0 && nx < (int)matriz.size() && ny >= 0 && ny < (int)matriz[0].size()){
-            if(matriz[nx][ny] == ARVORE_EM_CHAMAS || matriz[nx][ny] == ARVORE_QUEIMADA){
+            if(matriz[nx][ny] == ARVORE_EM_CHAMAS || matriz[nx][ny] == ARVORE_QUEIMADA || matriz[nx][ny] == VAZIO){
                 matriz[nx][ny] = ARVORE_SAUDAVEL;
             }
         }

@@ -122,6 +122,8 @@ bool Floresta :: simular(int maxIteracoes){
   
         if(animal.estaVivo()) {
            bool moveu = animal.mover(matriz);
+                 
+            propagaFogo();
 
            if(!moveu && matriz[animal.getPosicao().first][animal.getPosicao().second] == ARVORE_EM_CHAMAS){
             cout << "\nANIMAL MORTO - PRESO NO FOGO!\n";
@@ -130,9 +132,6 @@ bool Floresta :: simular(int maxIteracoes){
             return false;
            }
         }
-        
-        propagaFogo();
-
 
         if(animal.estaVivo()){
             auto pos = animal.getPosicao();

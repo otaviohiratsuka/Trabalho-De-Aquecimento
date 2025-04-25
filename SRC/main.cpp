@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "Floresta.hpp"
+#include "Animal.hpp"
 #include "config.hpp"
 
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 int main(){
     cout << "=== INICIANDO SIMULACAO ===" << endl;
 
-    Floresta floresta(2, 2);
+    Floresta floresta(2, 3);
 
     if(!floresta.carregaArquivo("SRC/input.dat")){
         return 1;
