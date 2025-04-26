@@ -12,7 +12,7 @@ int main(){
 
     Floresta floresta(2, 2);
 
-    if(!floresta.carregaArquivo("SRC/input.dat")){
+    if(!floresta.carregaArquivo("src/input.dat")){
         return 1;
     }
 
