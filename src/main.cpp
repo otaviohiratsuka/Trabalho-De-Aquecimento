@@ -10,7 +10,7 @@ using namespace std;
 int main(){
     cout << "=== INICIANDO SIMULACAO ===" << endl;
 
-    Floresta floresta(2, 2);
+    Floresta floresta(1, 1);
 
     if(!floresta.carregaArquivo("input.dat")){
         return 1;
@@ -25,7 +25,7 @@ int main(){
         cout << "Simulacao concluida: nao ha mais arvores em chamas." << endl;
     }
     else {
-        cout << "Simulacao terminou apos" << MAX_INTERACOES << "iteracoes." << endl;;
+        cout << "Total de iteracoes: " << floresta.getContIteracao() +1 << endl;
     }
     return 0;
 }

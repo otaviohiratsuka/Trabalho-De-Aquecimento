@@ -17,6 +17,9 @@ class Floresta {
     bool temFogo() const;
     void propagaFogo();
     bool ventoAtivado = false;
+    bool fogoPausado = false;
+    bool pausaProximaIteracao = false;
+    int contInteracao = 0;
 
 
     public:
@@ -29,5 +32,9 @@ class Floresta {
     bool simular(int maxInteracao);
 
     const Animal& getAnimal() const;
+
+    bool verificarMortePorFogo();
+    void darSegundaChance();
+    int getContIteracao() const;
 };
 #endif

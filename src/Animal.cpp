@@ -129,7 +129,7 @@ void Animal :: encontrarAgua(vector<vector<int>> & matriz){
 
     if(matriz[x][y] !=  AGUA) return;
 
-    matriz[x][y] = SEGURO ;
+    matriz[x][y] = VAZIO ;
     encontrouAgua++;
 
     const vector<pair<int, int>> direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};

@@ -12,8 +12,8 @@ const int ANIMAL = 5;
 const int SEGURO = 6;
 
 //tamanho da floresta
-const int TAM_LINHAS = 10;
-const int TAM_COLUNAS = 10;
+const int TAM_LINHAS = 5;
+const int TAM_COLUNAS = 5;
 
 //config de simulação
 const int MAX_INTERACOES = 100;
