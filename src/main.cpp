@@ -10,22 +10,19 @@ using namespace std;
 int main(){
     cout << "=== INICIANDO SIMULACAO ===" << endl;
 
-    Floresta floresta(1, 1);
+    Floresta floresta(2, 2);
 
-    if(!floresta.carregaArquivo("input.dat")){
+    if(!floresta.carregaArquivo("src/input.dat")){
         return 1;
     }
 
-    ofstream clearOutput("output.dat");
+    ofstream clearOutput("src/output.dat");
     clearOutput.close();
 
     bool terminouAntes = floresta.simular(MAX_INTERACOES);
     
     if(terminouAntes){
         cout << "Simulacao concluida: nao ha mais arvores em chamas." << endl;
-    }
-    else {
-        cout << "Total de iteracoes: " << floresta.getContIteracao() +1 << endl;
     }
     return 0;
 }

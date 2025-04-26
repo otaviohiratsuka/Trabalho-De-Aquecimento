@@ -19,7 +19,6 @@ class Floresta {
     bool ventoAtivado = false;
     bool fogoPausado = false;
     bool pausaProximaIteracao = false;
-    int contInteracao = 0;
 
 
     public:
@@ -35,6 +34,7 @@ class Floresta {
 
     bool verificarMortePorFogo();
     void darSegundaChance();
-    int getContIteracao() const;
+    void salvarTotalIteracoes(int total);
+
 };
 #endif

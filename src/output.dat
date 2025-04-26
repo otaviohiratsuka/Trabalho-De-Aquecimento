@@ -1,0 +1,192 @@
+=== Iteracao: 0===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (1, 2)
+1 1 0 1 1 1 0 1 4 1 
+1 0 5 4 1 1 1 0 1 0 
+0 1 1 0 1 0 1 4 1 1 
+4 1 0 1 2 1 0 1 0 1 
+1 1 1 2 2 2 1 1 1 4 
+1 0 4 1 2 1 1 0 1 1 
+0 1 1 0 1 4 0 1 1 0 
+1 4 0 1 0 1 1 0 1 1 
+1 0 1 1 4 0 1 1 0 1 
+1 1 0 0 1 1 1 0 4 1 
+
+[Estatisticas]
+ | passos:  1
+ | agua: 0
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 1===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (1, 3)
+1 1 0 1 1 1 0 1 4 1 
+1 0 1 5 1 1 1 0 1 0 
+0 1 1 1 2 0 1 4 1 1 
+4 1 0 2 2 2 0 1 0 1 
+1 1 2 2 2 2 2 1 1 4 
+1 0 4 2 2 2 1 0 1 1 
+0 1 1 0 2 4 0 1 1 0 
+1 4 0 1 0 1 1 0 1 1 
+1 0 1 1 4 0 1 1 0 1 
+1 1 0 0 1 1 1 0 4 1 
+
+[Estatisticas]
+ | passos:  2
+ | agua: 1
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 2===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (0, 3)
+1 1 0 5 1 1 0 1 4 1 
+1 0 1 0 2 1 1 0 1 0 
+0 1 1 2 2 2 1 4 1 1 
+4 1 2 2 3 2 2 1 0 1 
+1 2 2 3 3 3 2 2 1 4 
+1 0 4 2 3 2 2 0 1 1 
+0 1 1 2 2 4 0 1 1 0 
+1 4 0 1 2 1 1 0 1 1 
+1 0 1 1 4 0 1 1 0 1 
+1 1 0 0 1 1 1 0 4 1 
+
+[Estatisticas]
+ | passos:  3
+ | agua: 1
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 3===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (0, 2)
+1 1 5 1 2 1 0 1 4 1 
+1 0 1 2 2 2 1 0 1 0 
+0 1 2 2 3 2 2 4 1 1 
+4 2 2 3 3 3 2 2 0 1 
+2 2 3 3 3 3 3 2 2 4 
+1 2 4 3 3 3 2 2 1 1 
+0 1 2 2 3 4 2 1 1 0 
+1 4 0 2 2 2 1 0 1 1 
+1 0 1 1 4 0 1 1 0 1 
+1 1 0 0 1 1 1 0 4 1 
+
+[Estatisticas]
+ | passos:  4
+ | agua: 1
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 4===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (0, 1)
+1 5 0 2 2 2 0 1 4 1 
+1 0 2 2 3 2 2 0 1 0 
+0 2 2 3 3 3 2 4 1 1 
+4 2 3 3 3 3 3 2 2 1 
+2 3 3 3 3 3 3 3 2 4 
+2 2 4 3 3 3 3 2 2 1 
+0 2 2 3 3 4 2 2 1 0 
+1 4 2 2 3 2 2 0 1 1 
+1 0 1 2 4 2 1 1 0 1 
+1 1 0 0 1 1 1 0 4 1 
+
+[Estatisticas]
+ | passos:  5
+ | agua: 1
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 5===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (0, 0)
+5 1 2 2 3 2 2 1 4 1 
+1 2 2 3 3 3 2 2 1 0 
+2 2 3 3 3 3 3 4 2 1 
+4 3 3 3 3 3 3 3 2 2 
+3 3 3 3 3 3 3 3 3 4 
+2 3 4 3 3 3 3 3 2 2 
+2 2 3 3 3 4 3 2 2 0 
+1 4 2 3 3 3 2 2 1 1 
+1 0 2 2 4 2 2 1 0 1 
+1 1 0 2 1 2 1 0 4 1 
+
+[Estatisticas]
+ | passos:  6
+ | agua: 1
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 6===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (0, 0)
+5 2 2 3 3 3 2 2 4 1 
+2 2 3 3 3 3 3 2 2 0 
+2 3 3 3 3 3 3 4 2 2 
+4 3 3 3 3 3 3 3 3 2 
+3 3 3 3 3 3 3 3 3 4 
+3 3 4 3 3 3 3 3 3 2 
+2 3 3 3 3 4 3 3 2 2 
+2 4 3 3 3 3 3 2 2 1 
+1 2 2 3 4 3 2 2 0 1 
+1 1 2 2 2 2 2 0 4 1 
+
+[Estatisticas]
+ | passos:  6
+ | agua: 1
+ | repouso: 0/3
+ | status: VIVO
+
+
+
+=== Iteracao: 7===
+[Vento]
+DESATIVADO 
+
+Posição do animal: (0, 0)
+2 2 3 3 3 3 3 2 4 1 
+2 3 3 3 3 3 3 3 2 2 
+3 3 3 3 3 3 3 4 3 2 
+4 3 3 3 3 3 3 3 3 3 
+3 3 3 3 3 3 3 3 3 4 
+3 3 4 3 3 3 3 3 3 3 
+3 3 3 3 3 4 3 3 3 2 
+2 4 3 3 3 3 3 3 2 2 
+2 2 3 3 4 3 3 2 2 1 
+1 2 2 3 2 3 2 2 4 1 
+
+[Estatisticas]
+ | passos:  6
+ | agua: 1
+ | repouso: 0/3
+ | status: MORTO
+
+
+

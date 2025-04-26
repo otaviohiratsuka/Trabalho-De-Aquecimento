@@ -16,10 +16,6 @@ void Floresta :: ativarVento(){
     ventoAtivado = true;
 }
 
-int Floresta:: getContIteracao() const {
-    return contInteracao;
-}
-
 bool Floresta :: carregaArquivo(const string& arquivo){
     ifstream input(arquivo);
     if(!input){
@@ -41,7 +37,7 @@ bool Floresta :: carregaArquivo(const string& arquivo){
 }
 
 void Floresta :: salvaArquivo(const string& arquivo, int iteracao) const {
-    ofstream output(arquivo, ios::app);
+    ofstream output("src/" + arquivo, ios::app);
     if (!output.is_open()) return;
 
     auto pos = animal.getPosicao();
@@ -161,8 +157,9 @@ bool Floresta :: simular(int maxIteracoes){
                 pausaProximaIteracao = false;
             }
 
-
             if(verificarMortePorFogo()){
+            salvaArquivo("output.dat", iter);
+            mostrarEstadoTerminal();
             return false;
         }
 
@@ -176,6 +173,7 @@ bool Floresta :: simular(int maxIteracoes){
 
                 if(!animal.estaVivo()){
                     mostrarEstadoTerminal();
+                    salvaArquivo("output.dat", iter);
                     return false;
                 }
             }
@@ -195,6 +193,7 @@ bool Floresta :: simular(int maxIteracoes){
             cout << "ANIMAL MORREU QUEIMADO\n";
             animal.morrer();
             mostrarEstadoTerminal();
+            salvaArquivo("output.dat", iter);
             return false;
         }
       }
@@ -208,6 +207,7 @@ bool Floresta :: simular(int maxIteracoes){
         if (!temFogo()) {
             cout << "\nFOGO EXTINTO \n";
             mostrarEstadoTerminal();
+            salvaArquivo("output.dat", iter);
             return true;
         }
     }
