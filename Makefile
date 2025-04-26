@@ -1,16 +1,15 @@
-CXX      := g++        
-CXXFLAGS := -Wall -Wextra -Werror -Iinclude/
-LDFLAGS  := -lm
+CXX      := g++                 
+CXXFLAGS := -Wall -Wextra -Werror
+LDFLAGS  := -lm                 
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/
 TARGET   := app
 INCLUDE  := -Iinclude/
-SRC      := SRC/main.cpp SRC/Floresta.cpp SRC/Animal.cpp
-SRC_WILDCARD := $(wildcard SRC/*.cpp)
-SRC := $(sort $(SRC_MANUAL) $(SRC_WILDCARD))
+SRC      := $(wildcard src/*.cpp) 
 
-OBJECTS := $(patsubst src/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
+OBJECTS := $(notdir $(SRC:.cpp=.o))
+OBJECTS := $(addprefix $(OBJ_DIR)/, $(OBJECTS))
 
 all: build $(APP_DIR)/$(TARGET)
 

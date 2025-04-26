@@ -10,7 +10,7 @@ using namespace std;
 int main(){
     cout << "=== INICIANDO SIMULACAO ===" << endl;
 
-    Floresta floresta(2, 3);
+    Floresta floresta(2, 2);
 
     if(!floresta.carregaArquivo("SRC/input.dat")){
         return 1;
