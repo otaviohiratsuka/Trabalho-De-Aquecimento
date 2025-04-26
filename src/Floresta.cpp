@@ -119,12 +119,21 @@ void Floresta :: propagaFogo(){
 bool Floresta :: simular(int maxIteracoes){
     for (int iter = 0; iter < maxIteracoes; ++iter){
         cout << "\n=== ITERACAO " << iter << " ===" << endl;
+        
+        propagaFogo();
+
+        auto pos = animal.getPosicao();
+        if(matriz[pos.first][pos.second] == ARVORE_EM_CHAMAS){
+            cout << "\nANIMAL MORTO PELO FOGO!\n";
+            animal.morrer();
+            mostrarEstadoTerminal();
+            return false;
+        }
+
   
         if(animal.estaVivo()) {
            bool moveu = animal.mover(matriz);
-                 
-            propagaFogo();
-
+            
            if(!moveu && matriz[animal.getPosicao().first][animal.getPosicao().second] == ARVORE_EM_CHAMAS){
             cout << "\nANIMAL MORTO - PRESO NO FOGO!\n";
             animal.morrer();
@@ -135,6 +144,9 @@ bool Floresta :: simular(int maxIteracoes){
 
         if(animal.estaVivo()){
             auto pos = animal.getPosicao();
+            if(matriz[pos.first][pos.second] == SEGURO){
+                animal.encontrarAgua(matriz);
+            }
         
 
         if(matriz[pos.first][pos.second] == ARVORE_EM_CHAMAS){

@@ -144,4 +144,6 @@ void Animal :: encontrarAgua(vector<vector<int>> & matriz){
             }
         }
     }
+
+    cout << "Animal encontrou agua!!\n";
 }
