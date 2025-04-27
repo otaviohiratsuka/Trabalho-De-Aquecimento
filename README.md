@@ -101,6 +101,44 @@ Se o animal estiver em uma posição e o fogo chegar lá na mesma rodada, ele te
       <li><code>README.MD</code>: Documentação do código</li>
 </ul>
 
+<h2>config.hpp</h2>
+Essa classe serve para configurar todas as variáveis globais do sistema:
+
+```
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
+
+
+//Estado da celula
+const int VAZIO = 0;
+const int ARVORE_SAUDAVEL = 1;
+const int ARVORE_EM_CHAMAS = 2;
+const int ARVORE_QUEIMADA = 3;
+const int AGUA = 4;
+const int ANIMAL = 5;
+const int SEGURO = 6;
+
+//tamanho da floresta
+const int TAM_LINHAS = 10;
+const int TAM_COLUNAS = 10;
+
+//config de simulação
+const int MAX_INTERACOES = 100;
+const int MAX_REPOUSO = 3;
+const int DURACAO_FOGO = 3;
+
+enum PrioridadeMovimento{
+    MELHOR = 0,
+    INTERMEDIARIA = 1,
+    PIOR = 2
+};
+
+
+#endif
+```
+
+
+
 <h2>Classes</h2>
 
 <h3>Animal 🦊</h3>
@@ -203,11 +241,48 @@ A main.cpp tem a simples função de puxar todos os métodos, carregar o arquivo
 <h2>Resultados</h2>
 Para um breve exemplo, foi usado uma matriz 10x10 para mostrar os métodos funções do código.
 
-a função <code>encontrarAgua()</code> em ação:
+A função <code>encontrarAgua()</code> em ação:
 
+
+
+<img src="https://cdn.discordapp.com/attachments/426138366703173643/1365868472189583465/image.png?ex=680edfa4&is=680d8e24&hm=5afc8b01b08efeb46a176f133783db709f5a14bc64ffe442cf4499bf05f24d11&" alt=transform_agua width="500px">
+
+
+A celula 5 transforma as suas celulas adjacentes em <code>ARVORE_SAUDAVEL</code>.
+
+
+A função <code>verificaMortePorFogo()</code>:
+
+
+
+<img src="https://cdn.discordapp.com/attachments/426138366703173643/1365869802530275471/image.png?ex=680ee0e1&is=680d8f61&hm=a95776a9bf3d160b4848514754a0a55fa97381e66b8100119b90531074b5760a&" alt=transform_agua width="500px">
+
+
+A fogo "engole" a celula(5) e atualiza o estado do animal de vivo para morto
 
 
 </hr>
+
+#CONCLUSÃO
+</hr>
+Este projeto teve como objetivo desenvolver uma simulação de incêndio florestal utilizando a linguagem C++, modelando uma situação dinâmica onde um animal tenta sobreviver a uma floresta em chamas.A estrutura do projeto foi fundamentada em Programação Orientada a Objetos (POO), com a definição clara de duas principais entidades: <code>Animal</code> e <code>Floresta</code>. Cada uma delas foi responsável por gerenciar partes específicas da simulação — o animal focando em movimentação e sobrevivência, enquanto a floresta controla o ambiente e a propagação do fogo.
+A simulação implementou diversos comportamentos realistas:
+<ul>
+  <li>Propagação dinâmica de fogo para células adjacentes.</li>
+  <li>Mecanismo de "segunda chance" para o animal em situações de perigo iminente, pausando o fogo temporariamente para permitir fuga.</li>
+  <li>Espalhamento de água ao encontrar fontes (4), curando árvores ao redor.</li>
+  <li>Contador de iterações para medir o progresso da simulação.</li>
+  <li>Gravação automática do estado da floresta a cada passo, garantindo análise posterior através de arquivos.</li>
+</ul>
+Além disso, melhorias importantes foram implementadas, como a organização dos arquivos de saída dentro do diretório correto e o tratamento de casos críticos de forma robusta.
+
+Em resumo, o projeto alcançou uma simulação funcional, estratégica e realista de incêndio florestal com sobrevivência de um agente inteligente. Sua arquitetura modular permite futuras extensões, como inteligência artificial mais avançada para o animal, novas condições climáticas e variações no terreno.
+
+Este trabalho demonstra não apenas conhecimento técnico em C++, mas também pensamento lógico, organização de software e antecipação de cenários críticos no desenvolvimento de simulações dinâmicas
+
+<h2>Diagrama UML</h2>
+<img src="https://cdn.discordapp.com/attachments/426138366703173643/1365874543037648997/Trabalho_1-_AEDS_1.png?ex=680ee54b&is=680d93cb&hm=aaad0b32bc256cd0e4b6a37e074057c13585a82aadcb1f86ff8a6440022c4f08&" alt="diagram_uml" width = "500px">
+
 
 # COMPILAÇÃO E EXECUÇÃO
 </hr>
