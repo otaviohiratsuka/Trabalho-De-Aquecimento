@@ -198,7 +198,15 @@ Também é apresentado um função chamada <code>darSegundaChance()</code>, que 
 Para complementar a função existem alguns outros métodos auxiliares como: <code>temFogo()</code>, <code>salvaArquivo(string arquivo, int iteracao)</code> e <code>mostrarEstadoTerminal()</code>.
 
 <h3>main.cpp</h3>
-A main.cpp tem a simples função de puxar todos os métodos, carregar o arquivo <code>input.dat</code>
+A main.cpp tem a simples função de puxar todos os métodos, carregar o arquivo <code>input.dat</code>, limpar o arquivo <code>output.dat</code> e posicional o animal inicialmente <code>Floresta floresta(x,y).</code>
+
+<h2>Resultados</h2>
+Para um breve exemplo, foi usado uma matriz 10x10 para mostrar os métodos funções do código.
+
+a função <code>encontrarAgua()</code> em ação:
+
+
+
 </hr>
 
 # COMPILAÇÃO E EXECUÇÃO
