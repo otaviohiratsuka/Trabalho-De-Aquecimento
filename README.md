@@ -28,25 +28,25 @@
 <h3>Regras de Propagação de Incêndio 🔥</h3>
 A floresta é representada por uma matriz de dimensões N x M, onde cada célula pode conter:
 <ul>
-<li>0️⃣ -> Área Vazia (não queima) </li>
-<li>1️⃣ -> Árvore Saudável </li>
-<li>2️⃣ -> Árvore em Chamas </li>
-<li>3️⃣ -> Árvore Queimada </li>
-<li>4️⃣ -> Água</li>
+<li><code>0</code> -> Área Vazia (não queima) </li>
+<li><code>1</code> -> Árvore Saudável </li>
+<li><code>2</code> -> Árvore em Chamas </li>
+<li><code>3</code> -> Árvore Queimada </li>
+<li><code>4</code> -> Água</li>
 </ul>
 
 <p><b>1. Como o fogo se espalha?</b></br>
 O fogo começa em um ponto específico do mapa (informado no arquivo <code>input.dat</code>). A cada rodada (ou iteração), ele se espelaha para os lados: </br>
-Para cima ⬆, para baixo ⬇, para esquerda ⬅ e para a direta ➡. </br>
+Para cima <code>↑</code>, para baixo <code>↓</code>, para esquerda <code>←</code> e para a direta <code>→</code>. </br>
 <b>📌Importante:</b> O fogo não se espalha na diagonal.
 </p>
 
 <p><b>2. Quem pode pegar fogo?</b></br>
-Só as árvores saudáveis (1️⃣) podem pegar fogo. Se uma árvore está do lado de uma árvore em chamas(2️⃣), ela vai pegar na proxima iteração.
+Só as árvores saudáveis (<code>1</code>) podem pegar fogo. Se uma árvore está do lado de uma árvore em chamas(<code>2</code>), ela vai pegar na proxima iteração.
 </p>
 
 <p><b>3. O que acontece com uma árvore em chamas?</b></br>
-Assim que uma árvore pega fogo, ela queima por uma rodada. Na rodada seguinte, ela vira uma árvore queimada(3️⃣) e não pega fogo novamente.
+Assim que uma árvore pega fogo, ela queima por uma rodada. Na rodada seguinte, ela vira uma árvore queimada(<code>3</code>) e não pega fogo novamente.
 </p>
 
 <p><b>4. Quando a simulação para? </b></br>
@@ -82,7 +82,123 @@ Se o animal estiver em uma posição e o fogo chegar lá na mesma rodada, ele te
 
 </hr>
 
-# LÓGICA
+# LÓGICA UTILIZADA
+
+<h2>Estrutura do Projeto</h2>
+<ul>
+  <li><code>build</code>: onde está localizado os object (.o) e o executavel para a compilação app.exe</li>
+  <li><code>src</code>: onde está localizado os arquivos do código-fonte</li>
+    <ul><li><code>Animal.hpp</code> </li>
+      <li><code>Animal.cpp</code></li>
+      <li><code>Floresta.hpp</code></li>
+      <li><code>Floresta.cpp</code></li>
+      <li><code>config.hpp</code></li>
+      <li><code>main.cpp</code></li>
+      <li><code>input.dat</code></li>
+      <li><code>output.dat</code></li>
+    </ul>
+      <li><code>Makefile</code>: Arquivo usado para compilar e executar o programa</li>   
+      <li><code>README.MD</code>: Documentação do código</li>
+</ul>
+
+<h2>Classes</h2>
+
+<h3>Animal 🦊</h3>
+</hr>
+<b>Como ele se move?</b>
+</br>
+O principal método da classe é o:                  
+
+[`bool Animal :: mover(vector<vector<int>>& matriz)`](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Animal.cpp#L51-L123)
+
+
+Antes de começar a mover, o animal avalia as células ao redor usando a função
+[`PrioridadeMovimento Animal :: avaliarPrioridade(int tipoCelula) const;`](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Animal.cpp#L8-L25)
+ela define a ordem de preferência:
+<ul>
+  <li><b>Melhor opção(0): <code>AGUA</code> (valor 4)</b></li>
+  <li><b>Opções Intermediarias(1): <code>VAZIO</code> (valor 1) e <code>ARVORE_SAUDAVEL</code> (valor 1)</b></li>
+  <li><b>Pior opção(2):</b> <code>ARVORE_QUEIMADA</code> (valor 3)</li>
+  <li> <code>ARVORE_EM_CHAMAS</code> sempre deve ser evitado -  se o animal estiver em uma celula em chamas, morre instantaneamente.</li>
+</ul>
+
+Agora, com as prioridades configuradas o animal precisa fazer algumas verificações antes de começar a se mover. A primeira verificação é do seu estado, se está vivo ou morto: <code>if (!estaVivo()) return false;</code> Se o animal já morreu, não se move mais. Após isso, o animal verifica células adjacentes(cima, baixo, esquerda, direta) para o fogo, usando uma variavel [<code>fogoAdjacente</code>](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Animal.cpp#L64-L76) .Se houver fogo próximo, o animal interrompe o repouso com o <code>break;</code>
+
+Assim que o animal chega em um celula segura (<code>VAZIO</code> ou <code>AGUA</code>) ele pode repousar. O animal só sai do repouso se houver fogo por perto e tiver execedido o tempo máximo de repouso(<code>MAX_REPOUSO</code>).
+
+A [lógica do movimento](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Animal.cpp#L93-L110) funciona da seguinte forma. Se o animal não estiver em repouso, é gerado uma lista de células adjacentes válidas(excluindo fogo). Ordena as opções por prioridade, usando <code>avaliarPrioridade()</code>. Depois de ordenadar as opções (<code>sort(opcoes.begin(), opcoes.end());</code>), o animal escolhe a melhor célula disponível (<code>posicao = opcoes[0].second;</code>). E no final contabiliza a quantidade de passos.
+
+Como dito anteriormente, a melhor opção sempre vai ser a <code>AGUA</code>, e isso não é por acaso. Assim que o animal alcança n valor 4 a função <code>encontrarAgua()</code> é ativada. E a primera ação da função é transformar a celula atual (4) em uma celula vazia (0): <code>matriz[posicao.first][posicao.second] = VAZIO;</code>. Logo após, inicia-se o efeito principal: a regeneração das células ao redor.
+Primeiro, um loop percorre as quatro direções (cima, baixo, esquerda e direita), aplicando as transformações necessárias.
+[Loop](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Animal.cpp#L137) | [Transformações](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Animal.cpp#L141-L146) .
+
+<h3>Floresta 🌳</h3>
+A classe Floresta é o núcleo da simulação, responsável por gerenciar o ambiente, a propagação do fogo e a interação com o animal. A floresta tem como resposabilidade iniciar a matriz e posicionar o animal nas coordenadas (x,y) <code>Floresta(int x, int y)</code> . Outro método chave é <code>carregaArquivo(string arquivo)</code>, onde lê o <code>input.dat</code> para carregar o mapa incial da floresta.
+
+
+
+<br><b>Como acontece a propagação do fogo?</b><br>
+
+
+
+A função <code>propagaFogo()</code> é responsável por simular a propagação do incêndio na floresta. Essa função permite o controle de pausa, criação de matriz temporária (evita que as alterações afetem o cálculo das células vizinhas durante a iteração.).
+
+No funcionamento das chamas, há um looping que percorre todas as células a matriz para verificar se está em chamas. Depois incrementa <code>tempoFogo</code> para células em chamas. Se antingir <code>DURACAO_FOGO</code>, a celula vira <code>ARVORE_QUEIMADA</code>. [Células em Chamas](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Floresta.cpp#L95-L98). 
+A propagação só acontece em <code>ARVORE_SAUDAVEL</code> e <code>VAZIO</code>.
+```cpp
+// Define direções de propagação
+vector<pair<int, int>> direcoes;
+if (ventoAtivado) {
+    direcoes = {{-1,0}, {0,-1}, {1,0}, {0,1}};  // Ordem específica com vento
+} else {
+    direcoes = {{-1,0}, {1,0}, {0,-1}, {0,1}};  // Ordem padrão
+}
+
+// Propaga para células vizinhas
+for (const auto& dir : direcoes) {
+    int ni = i + dir.first;
+    int nj = j + dir.second;
+    
+    // Verifica limites da matriz
+    if (ni >= 0 && ni < TAM_LINHAS && nj >= 0 && nj < TAM_COLUNAS) {
+        // Pega fogo se for árvore saudável ou vazio
+        if (matriz[ni][nj] == ARVORE_SAUDAVEL || matriz[ni][nj] == VAZIO) {
+            novaMatriz[ni][nj] = ARVORE_EM_CHAMAS;
+            tempoFogo[ni][nj] = 1;  // Inicia contador
+        }
+    }
+}
+```
+*Código decrito em: [linha 100 a 114](https://github.com/otaviohiratsuka/Trabalho-De-Aquecimento/blob/main/src/Floresta.cpp#L100)*
+Obs.: O vento alerata a ordem de propagação para simular a direção do vento.
+
+Ápos isso, as mudanças são aplicadas atualizando a matriz principal <code>matriz = novaMatriz;</code> 
+
+[Exemplo Prático]
+```
+[1, 0, 1]  
+[1, 2, 1]  // 2 = ARVORE_EM_CHAMAS
+[1, 1, 4]
+
+[2, 2, 2]  
+[2, 3, 2]  // 3 = ARVORE_QUEIMADA
+[2, 2, 4]
+
+[3, 3, 3]  
+[3, 3, 3]  // 4 = AGUA
+[3, 3, 4]
+```
+
+<br><b>Interação com o Animal</b><br>
+
+O método <code>simular(int maxIterações)</code> é resposavel por mostrar a iterações. Mostrando se o animal morreu preso no fogo(<code>verificarMortePorFogo()</code>) ou se o fogo foi extinto(se não há mais células <code>ARVORE_EM_CHAMAS</code>) (<code>temFogo()</code>).
+
+Também é apresentado um função chamada <code>darSegundaChance()</code>, que permite que o animal consiga fugir do fogo quando ele está adjacente, pausando o fogo(<code>fogoPausado=true</code>) e força um movimento de emergencia.
+
+Para complementar a função existem alguns outros métodos auxiliares como: <code>temFogo()</code>, <code>salvaArquivo(string arquivo, int iteracao)</code> e <code>mostrarEstadoTerminal()</code>.
+
+<h3>main.cpp</h3>
+A main.cpp tem a simples função de puxar todos os métodos, carregar o arquivo <code>input.dat</code>
 </hr>
 
 # COMPILAÇÃO E EXECUÇÃO
@@ -92,44 +208,15 @@ A algorítmo disponibilizado possui um arquivo Makefile que realiza todo o proce
 | Comando                |  Função                                                                                           |                     
 | -----------------------| ------------------------------------------------------------------------------------------------- |
 |  `make clean`          | Apaga a última compilação realizada contida na pasta build                                        |
-|  `make run`            | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build, além de em seguida executar o programa da pasta build após a realização da compilação | 
-|  `make`                | 
-
-
-
-# BIBLIOTECAS
-</hr>
-<h3>Bibliotecas utilizadas no projeto 📚</h3>
-<ul>
-  <li><code>#include 'iostream' </code></li>
-  <li><code>#include 'algorithm' </code></li>
-  <li><code>#include 'vector' </code></li>
-  <li><code>#include 'utility' </code></li>
-  <li><code>#include 'frstream' </code></li>
-  <li><code>#include 'string' </code></li>
-</ul>
-
-# ESTRUTURA DO PROJETO
-</hr>
-<h3>Estrutura de Pastas 🗃️</h3>
-
-```bash
-📁 projeto/               
-├── 📂 src/              
-│   ├── Animal.hpp
-│   ├── Animal.cpp
-│   ├── config.hpp          # HEADERS
-│   ├── Floresta.hpp
-│   ├── Floresta.cpp
-│   ├── main.cpp            # Codigo-Fonte
-│   ├── input.dat           # Arquivo de entrada 
-│   ├── output.dat          # Arquivo de saída 
-│   └── simulador.exe       # Executável 
-├── README.md             # Documentação
-└── Makefile
-```
+|  `make`              	 | Compila o código-fonte conforme as regras definidas no Makefile | 
+|  `make run`            | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build, além de em seguida executar o programa da pasta build após a realização da compilação |
 
 # AUTOR
 Criado por Otávio Hiratsuka Camilo;
 
 Aluno do curso de Engenharia da Computação no [CEFET-MG](https://www.cefetmg.br)
+<div> 
+  <a href = "mailto:otaviohiratsukac@gmail.com"><img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
+  <a href="https://www.linkedin.com/in/ot%C3%A1vio-hiratsuka-camilo-045563287/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>  
+</div>
+
